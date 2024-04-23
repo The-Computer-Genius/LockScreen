@@ -3,7 +3,7 @@
     <shortcut
         android:shortcutId="openSettingsShortcut"
         android:enabled="true"
-        android:icon="@mipmap/ic_launcher_2"
+        android:icon="@mipmap/ic_launcher"
 
         android:shortcutShortLabel="@string/settings">
         <intent

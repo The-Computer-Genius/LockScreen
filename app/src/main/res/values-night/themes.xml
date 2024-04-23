@@ -29,11 +29,11 @@
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
 
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <!-- Optional: set to transparent if your app is drawing behind the status bar. -->
         <item name="android:statusBarColor">@color/color_top_bars_dark</item>
-        <item name="topBarColor">@color/color_top_bars_dark</item>
-        <!-- Optional: set the status bar light and content dark. -->
         <item name="android:windowLightStatusBar">false</item>
+
+        <item name="topBarColor">@color/color_top_bars_dark</item>
+        <item name="linkColor">@color/color_link_dark</item>
 
     </style>
 </resources>

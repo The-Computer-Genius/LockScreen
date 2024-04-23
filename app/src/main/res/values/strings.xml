@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Screen Lock</string>
     <string name="settings">Settings</string>
+    <string name="app_safety_text">The Lock Screen Project by Harasees Singh is free and open source, which means you can view and examine its source code on GitHub. This eliminates any privacy or security concerns that may arise when giving the app accessibility permission.</string>
+    <string name="accessibility_service_desc">Turns the screen off when app icon is clicked</string>
 </resources>

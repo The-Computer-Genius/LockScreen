@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/topBarColor"
-            app:title="Settings" />
+            app:title="Lock Screen Settings" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.divider.MaterialDivider
@@ -29,110 +29,177 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/topBarLayout" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/settingsCardView"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBarDivider">
+        app:layout_constraintTop_toTopOf="@id/topBarDivider">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="15dp">
+            android:paddingBottom="16dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/settingsCardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="To enable lock screen functionality, you need to give the Accessibility permission to the app."
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/settingsBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Open Accessibility Settings"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.498"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="Under Settings --> Accessibility, find and enable &quot;Lock Screen Service&quot;"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/appSafetyDivider1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintBottom_toBottomOf="@id/textViewSafety"
+                app:layout_constraintEnd_toStartOf="@+id/textViewSafety"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textViewSafety" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/textView1"
+                android:id="@+id/textViewSafety"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="To enable lock screen functionality, you need to give Accessibility permission to the app."
+                android:layout_marginTop="35dp"
+                android:text="App Safety"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/appSafetyDivider2"
+                app:layout_constraintStart_toEndOf="@id/appSafetyDivider1"
+                app:layout_constraintTop_toBottomOf="@id/textViewAppInfo" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/appSafetyDivider2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                app:layout_constraintBottom_toBottomOf="@id/textViewSafety"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewSafety"
+                app:layout_constraintTop_toTopOf="@id/textViewSafety" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textViewOpenSourceInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="The Lock Screen Project developed by Harasees Singh is free and open source, which means you can view it's source code on GitHub. This eliminates any privacy or security concerns that may arise when granting the accessibility permission."
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/settingsBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Open Settings"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewSafety" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textViewOpenSourceCode"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Find and Enable &quot;Lock Screen Service&quot; under settings"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="Open Source Code on GitHub"
+                android:textColor="?attr/linkColor"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView1" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewOpenSourceInfo" />
+
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/appInfoDivider1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintBottom_toBottomOf="@id/textViewAppInfoTitle"
+                app:layout_constraintEnd_toStartOf="@+id/textViewAppInfoTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textViewAppInfoTitle" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textViewAppInfoTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:text="App Info"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/appInfoDivider2"
+                app:layout_constraintStart_toEndOf="@id/appInfoDivider1"
+                app:layout_constraintTop_toBottomOf="@id/settingsCardView" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/appInfoDivider2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                app:layout_constraintBottom_toBottomOf="@id/textViewAppInfoTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewAppInfoTitle"
+                app:layout_constraintTop_toTopOf="@id/textViewAppInfoTitle" />
+
+
+            <TextView
+                android:id="@+id/textViewAppInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="This app turns the screen off when you click on the app icon.\n\nTo open this page again, long press the app icon and click the &quot;Settings&quot; option"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewAppInfoTitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/appSafetyDivider1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/textViewSafety"
-        app:layout_constraintEnd_toStartOf="@+id/textViewSafety"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textViewSafety" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/textViewSafety"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="App Safety"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/appSafetyDivider2"
-        app:layout_constraintStart_toEndOf="@id/appSafetyDivider1"
-        app:layout_constraintTop_toBottomOf="@id/settingsCardView" />
-
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/appSafetyDivider2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/textViewSafety"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewSafety"
-        app:layout_constraintTop_toTopOf="@id/textViewSafety" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/textView3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="The Lock Screen Project is free and open source, which means you can view and examine its source code on GitHub. This eliminates any privacy or security concerns that may arise when giving the app accessibility permission."
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSafety" />
-
-    <TextView
-        android:id="@+id/textViewOpenSourceCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Open Source Code on GitHub"
-        android:textColor="?android:attr/textColorLink"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

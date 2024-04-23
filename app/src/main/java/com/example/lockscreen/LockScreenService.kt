@@ -4,7 +4,6 @@ import android.accessibilityservice.GestureDescription
 import android.content.Intent
 import android.os.Build
 import android.graphics.Path
-import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 
 class LockScreenService : AccessibilityService() {
@@ -30,7 +29,6 @@ class LockScreenService : AccessibilityService() {
 
     fun lockScreen()
     {
-        Log.e("MyTag", "Here")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             // For Android Pie (API 28) and above, use GLOBAL_ACTION_LOCK_SCREEN
             performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
