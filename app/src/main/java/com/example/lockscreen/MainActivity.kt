@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
                 }
             }
             else
-                finish()
+                finishAndRemoveTask()
         }
 
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
     override fun onClickSimpleAlertPositiveBtn(dlg : SimpleAlertDlg, dlgUniqueID : Int)
     {
         if(dlgUniqueID == ACCESSIBILITY_PERM_GRANTED_DLG)
-            finish()
+            finishAndRemoveTask()
     }
 
     override fun onClickSimpleAlertNegativeBtn(dlg : SimpleAlertDlg, dlgUniqueID : Int)

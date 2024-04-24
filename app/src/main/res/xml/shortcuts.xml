@@ -8,7 +8,7 @@
         android:shortcutShortLabel="@string/settings">
         <intent
             android:action="com.example.lockscreen.OPEN_SETTINGS"
-            android:targetPackage="com.example.lockscreen"
+            android:targetPackage="com.harasees.lockscreen"
             android:targetClass="com.example.lockscreen.MainActivity" />
     </shortcut>
 </shortcuts>
