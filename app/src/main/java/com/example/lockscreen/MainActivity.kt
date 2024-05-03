@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
         permissionStateAtStart = if(p != -1) p == 1  else (LockScreenService.curService != null)
 
 
-        if(permissionStateAtStart && intent.action != "com.example.lockscreen.OPEN_SETTINGS")
+        /*if(permissionStateAtStart && intent.action != "com.example.lockscreen.OPEN_SETTINGS")
         {
             LockScreenService.curService?.lockScreen()
 
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
             }
             else
                 finishAndRemoveTask()
-        }
+        }*/
 
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
         val dlg = SimpleAlertDlg.newInstance(ABOUT_DEV_DLG)
         dlg.title = "About the developer"
         dlg.body =
-                "Harasees Singh is a 12th grade school student who also likes to develop android apps as a hobby.\n\nFor any queries contact:\nharaseessingh01@gmail.com"
+                "Harasees Singh is a 12th grade school student. He likes to program desktop applications in C++, Microsoft VC++, Web applications in Python and Android apps in Kotlin.\n\nFor any queries contact:\nharaseessingh01@gmail.com"
         dlg.positiveBtnTitle = "OK"
         dlg.negativeBtnTitle = "Copy email to clipboard"
         dlg.show(supportFragmentManager, ABOUT_DEV_DLG.toString())
@@ -200,7 +200,8 @@ class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
         if(dlgUniqueID == ABOUT_DEV_DLG)
         {
             copyTextToClipboard(this, DEV_EMAIL)
-            Toast.makeText(this, "Copied to Clipboard", Toast.LENGTH_LONG).show()
+            if(Build.VERSION.SDK_INT <= 32)
+                Toast.makeText(this, "Copied to Clipboard", Toast.LENGTH_LONG).show()
         }
     }
 }
