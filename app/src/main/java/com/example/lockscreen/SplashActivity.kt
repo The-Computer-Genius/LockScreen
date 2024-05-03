@@ -18,7 +18,7 @@ class SplashActivity : AppCompatActivity()
     {
         super.onCreate(savedInstanceState)
 
-        if(LockScreenService.curService != null)
+        if(LockScreenService.curService != null && MainActivity.getFunctionalityStatus(this))
         {
             LockScreenService.curService?.lockScreen()
             finishAndRemoveTask()
@@ -50,12 +50,5 @@ class SplashActivity : AppCompatActivity()
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
-
-        /*enableEdgeToEdge()
-        mainBinding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(mainBinding.root)
-        */
-
-
     }
 }

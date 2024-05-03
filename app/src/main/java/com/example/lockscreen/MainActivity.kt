@@ -11,32 +11,46 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.provider.Settings
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
 import com.example.lockscreen.databinding.ActivityMainBinding
-import java.util.Timer
-import java.util.TimerTask
+import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
 {
-    companion object {
+    companion object
+    {
         const val OLD_ANDROID_VERSION_DLG : Int = 1
         const val LOCK_SCREEN_ERROR_DLG : Int = 2
         const val ACCESSIBILITY_PERM_GRANTED_DLG : Int = 3
         const val ABOUT_DEV_DLG : Int = 4
+        const val REQ_PERM_DLG : Int = 5
 
         const val GITHUB_LINK : String = "https://github.com/The-Computer-Genius/LockScreen"
         const val DEV_EMAIL : String = "haraseessingh01@gmail.com"
+
+        fun setFunctionalityStatus(context : Context, enabled : Boolean)
+        {
+            context.getSharedPreferences("MainActivity", MODE_PRIVATE).edit()
+                    .putBoolean("enabled", enabled)
+                    .apply()
+        }
+
+        fun getFunctionalityStatus(context : Context) : Boolean
+        {
+            return context.getSharedPreferences("MainActivity", MODE_PRIVATE)
+                    .getBoolean("enabled", false)
+        }
     }
 
     private lateinit var mainBinding : ActivityMainBinding
@@ -48,76 +62,37 @@ class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
         super.onCreate(savedInstanceState)
 
         val p = savedInstanceState?.getInt("permissionStateAtStart", -1) ?: -1
-        permissionStateAtStart = if(p != -1) p == 1  else (LockScreenService.curService != null)
-
-
-        /*if(permissionStateAtStart && intent.action != "com.example.lockscreen.OPEN_SETTINGS")
-        {
-            LockScreenService.curService?.lockScreen()
-
-            if(lifecycle.currentState == Lifecycle.State.RESUMED)
-            {
-                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.P)
-                {
-                    val dlg = SimpleAlertDlg.newInstance(OLD_ANDROID_VERSION_DLG)
-                    dlg.title = "Older Android version"
-                    dlg.body = "Android versions older than 9.0 do not support direct screen locking, " +
-                            "the app did try to lock the screen by another method but failed. " +
-                            "Your android version is ${Build.VERSION.RELEASE}"
-                    dlg.positiveBtnTitle = "OK"
-                    dlg.show(supportFragmentManager, OLD_ANDROID_VERSION_DLG.toString())
-                }
-                else
-                {
-                    val dlg = SimpleAlertDlg.newInstance(LOCK_SCREEN_ERROR_DLG)
-                    dlg.title = "Unexpected error"
-                    dlg.body = "Could not lock the screen due to an unknown reason"
-                    dlg.positiveBtnTitle = "OK"
-                    dlg.show(supportFragmentManager, LOCK_SCREEN_ERROR_DLG.toString())
-                }
-            }
-            else
-                finishAndRemoveTask()
-        }*/
+        permissionStateAtStart = if (p != -1) p == 1 else (LockScreenService.curService != null)
 
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
 
         initTextView()
 
-        mainBinding.settingsBtn.setOnClickListener { onClickSettingsBtn() }
-        mainBinding.textViewOpenSourceCode.setOnClickListener { openGitHub() }
-
-        setCardVisibility()
+        initFunctionalityBtn()
     }
 
     override fun onSaveInstanceState(outState : Bundle, outPersistentState : PersistableBundle)
     {
         super.onSaveInstanceState(outState, outPersistentState)
-        outState.putInt("permissionStateAtStart", if(permissionStateAtStart) 1 else 0)
+        outState.putInt("permissionStateAtStart", if (permissionStateAtStart) 1 else 0)
     }
 
     override fun onResume()
     {
         super.onResume()
 
-        if(LockScreenService.curService != null && !permissionStateAtStart)
+        if (LockScreenService.curService != null && !permissionStateAtStart)
         {
-            val dlg = SimpleAlertDlg.newInstance(ACCESSIBILITY_PERM_GRANTED_DLG)
-            dlg.title = "Permission Granted"
-            dlg.body = "The app must exit once after permission is granted.\n"
-            dlg.positiveBtnTitle = "Exit app"
-            dlg.cancellable = false
-
-            dlg.show(supportFragmentManager, ACCESSIBILITY_PERM_GRANTED_DLG.toString())
+            setFunctionalityStatus(this, true)
+            initFunctionalityBtn()
         }
-
-        setCardVisibility()
     }
 
     private fun initTextView()
     {
-        val ss = SpannableString("The Lock Screen Project developed by Harasees Singh is free and open source, which means you can view and examine its source code on GitHub. This eliminates any privacy or security concerns that may arise when giving the app accessibility permissions.")
+        val ss =
+                SpannableString("The Lock Screen Project developed by Harasees Singh is free and open source, which means you can view and examine its source code on GitHub. This eliminates any privacy or security concerns that may arise when giving the app accessibility permissions.")
         val clickableSpan : ClickableSpan = object : ClickableSpan()
         {
             override fun onClick(textView : View)
@@ -138,25 +113,89 @@ class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
         textView.text = ss
         textView.movementMethod = LinkMovementMethod.getInstance()
         textView.highlightColor = Color.TRANSPARENT
+
+        mainBinding.textViewOpenSourceCode.setOnClickListener { openGitHub() }
     }
+
+
+    private fun initFunctionalityBtn()
+    {
+        val status = if(LockScreenService.curService == null)
+        {
+            setFunctionalityStatus(this, false)
+            false
+        }
+        else
+            getFunctionalityStatus(this)
+
+        if (status)
+        {
+            val ss = SpannableString("Screen Lock feature is currently enabled.\nClick here to disable it.")
+            val clickableSpan : ClickableSpan = object : ClickableSpan()
+            {
+                override fun onClick(textView : View)
+                {
+                    val s = Snackbar.make(mainBinding.root, "Disable Screen Lock feature?", Snackbar.LENGTH_LONG)
+                    s.setAction("Disable") {
+                        setFunctionalityStatus(this@MainActivity, false)
+                        initFunctionalityBtn()
+                    }
+                    s.show()
+                }
+
+                override fun updateDrawState(ds : TextPaint)
+                {
+                    super.updateDrawState(ds)
+                    ds.color = getColorFromTheme(this@MainActivity, R.attr.linkColor)
+                    ds.isUnderlineText = true
+                }
+            }
+            ss.setSpan(clickableSpan, 42, 52, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+            mainBinding.textViewFunctionalityStatus.text = ss
+            mainBinding.textViewFunctionalityStatus.movementMethod = LinkMovementMethod.getInstance()
+            mainBinding.textViewFunctionalityStatus.highlightColor = Color.TRANSPARENT
+
+        }
+        else
+            mainBinding.textViewFunctionalityStatus.text =
+                    "Screen Lock feature is currently disabled"
+
+        mainBinding.enabledFunctionalityBtn.visibility = if(status)
+            View.GONE
+        else
+            View.VISIBLE
+
+
+        mainBinding.enabledFunctionalityBtn.setOnClickListener {
+            val curStatus = getFunctionalityStatus(this)
+            if (curStatus)
+                setFunctionalityStatus(this, false)
+            else
+            {
+                if (LockScreenService.curService == null)
+                    showPermDlg()
+                else
+                    setFunctionalityStatus(this, true)
+            }
+            initFunctionalityBtn()
+        }
+    }
+
+
     private fun openGitHub()
     {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_LINK))
         startActivity(browserIntent)
     }
 
-    private fun setCardVisibility()
+    private fun showPermDlg()
     {
-        if(LockScreenService.curService == null)
-            mainBinding.settingsCardView.visibility = View.VISIBLE
-        else
-            mainBinding.settingsCardView.visibility = View.GONE
-    }
+        val frag = supportFragmentManager.findFragmentByTag(REQ_PERM_DLG.toString())
+        val dlg = if (frag != null) frag as PermDialog else PermDialog()
 
-    private fun onClickSettingsBtn()
-    {
-        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-        startActivity(intent)
+        if (!dlg.isAdded)
+            dlg.show(supportFragmentManager, REQ_PERM_DLG.toString())
     }
 
     private fun showAboutDevDlg()
@@ -178,11 +217,11 @@ class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
         clipboardManager.setPrimaryClip(clipData)
     }
 
-    fun getColorFromTheme(context: Context, color : Int) : Int
+    fun getColorFromTheme(context : Context, color : Int) : Int
     {
         val typedValue = TypedValue()
 
-        val a: TypedArray =
+        val a : TypedArray =
                 context.obtainStyledAttributes(typedValue.data, intArrayOf(color))
         val retrievedColor = a.getColor(0, 0)
         a.recycle()
@@ -191,16 +230,16 @@ class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
 
     override fun onClickSimpleAlertPositiveBtn(dlg : SimpleAlertDlg, dlgUniqueID : Int)
     {
-        if(dlgUniqueID == ACCESSIBILITY_PERM_GRANTED_DLG)
+        if (dlgUniqueID == ACCESSIBILITY_PERM_GRANTED_DLG)
             finishAndRemoveTask()
     }
 
     override fun onClickSimpleAlertNegativeBtn(dlg : SimpleAlertDlg, dlgUniqueID : Int)
     {
-        if(dlgUniqueID == ABOUT_DEV_DLG)
+        if (dlgUniqueID == ABOUT_DEV_DLG)
         {
             copyTextToClipboard(this, DEV_EMAIL)
-            if(Build.VERSION.SDK_INT <= 32)
+            if (Build.VERSION.SDK_INT <= 32)
                 Toast.makeText(this, "Copied to Clipboard", Toast.LENGTH_LONG).show()
         }
     }
