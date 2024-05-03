@@ -21,19 +21,19 @@
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Open Accessibility Settings"
-        app:layout_constraintEnd_toEndOf="@+id/cancelPermBtn"
-        app:layout_constraintTop_toBottomOf="@+id/cancelPermBtn" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelPermBtn"
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="Cancel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintEnd_toEndOf="@+id/settingsBtn"
+        app:layout_constraintTop_toBottomOf="@+id/settingsBtn" />
 
     <TextView
         android:id="@+id/textView2"
