@@ -9,9 +9,9 @@ android {
 
     defaultConfig {
         applicationId = "com.harasees.lockscreen"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
-        versionCode = 6
+        versionCode = 8
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

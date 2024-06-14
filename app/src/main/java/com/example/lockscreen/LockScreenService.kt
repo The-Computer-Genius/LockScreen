@@ -19,6 +19,7 @@ class LockScreenService : AccessibilityService() {
     {
         super.onServiceConnected()
         curService = this
+        MainActivity.setFunctionalityStatus(this, true)
     }
 
     override fun onUnbind(intent : Intent?) : Boolean
@@ -29,15 +30,6 @@ class LockScreenService : AccessibilityService() {
 
     fun lockScreen()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            // For Android Pie (API 28) and above, use GLOBAL_ACTION_LOCK_SCREEN
-            performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
-        } else {
-            // For older versions, simulate a power button press event to lock the screen
-            val path = Path()
-            path.moveTo(100f, 100f)
-            val gestureDescription = GestureDescription.Builder().addStroke(GestureDescription.StrokeDescription(path, 0, 100L)).build()
-            dispatchGesture(gestureDescription, null, null)
-        }
+        performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
     }
 }

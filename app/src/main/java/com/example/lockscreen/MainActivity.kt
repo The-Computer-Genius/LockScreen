@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), SimpleAlertDlg.OnClickListener
         fun getFunctionalityStatus(context : Context) : Boolean
         {
             return context.getSharedPreferences("MainActivity", MODE_PRIVATE)
-                    .getBoolean("enabled", false)
+                    .getBoolean("enabled", LockScreenService.curService != null)
         }
     }
 
